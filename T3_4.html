@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz Competition</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #0d071f;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: rgb(20, 53, 102);
+      padding: 20px;
+      border-radius: 10px;
+    }
+    h1, h2 {
+      text-align: center;
+      color: #dbe4f0;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .question p {
+      font-weight: bold;
+    }
+    .question button {
+      display: block;
+      margin: 5px 0;
+      padding: 10px;
+      width: 100%;
+      background-color: #79a9dc;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-align: left;
+    }
+    .question button:hover {
+      background-color: #385876;
+    }
+    .question button.selected {
+      border: 6px solid #edf2f3;
+    }
+
+    #joke {
+      font-style: italic;
+      margin: 15px 0;
+      color: white;
+    }
+    #submitBtn {
+      background-color: #28a745;
+      margin-top: 10px;
+      padding: 10px;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #timer {
+      font-weight: bold;
+      color: #d9534f;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    #nameSection {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    input[type="text"] {
+      padding: 8px;
+      width: 60%;
+      margin-top: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+      .container {
+        padding: 15px;
+      }
+      h1 {
+        font-size: 24px;
+      }
+      .question button {
+        font-size: 14px;
+      }
+      input[type="text"] {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>QUIZ COMPETITION</h1>
+    <hr>
+
+    <!-- Name Enrollment -->
+    <div id="nameSection">
+      <h2>Enter Your Name to Start The Quiz</h2>
+      <input type="text" id="username" placeholder="Your Name">
+      <br><br>
+      <button onclick="startQuiz()">Start Quiz</button>
+    </div>
+
+    <!-- Timer -->
+    <div id="timer" style="display:none;">Time Left: <span id="time">60</span> seconds</div>
+
+    <!-- Quiz Section -->
+    <div id="quizSection" style="display:none;">
+      <h2>🧠 Quiz Time</h2>
+      <div id="quiz"></div>
+      <button id="submitBtn" onclick="submitQuiz()">Submit Quiz</button>
+    </div>
+
+    <!-- Result -->
+    <div id="result" style="display:none; text-align:center; margin-top:20px;"></div>
+  </div>
+
+  <script>
+    const questions = [
+      { q: "What does CSS stand for?", options: ["Cascading Style Sheets", "Computer Style Syntax", "Creative Style System"], answer: 0 },
+      { q: "Which method is used to fetch data in JavaScript?", options: ["getData()", "fetch()", "retrieve()"], answer: 1 },
+      { q: "Which property changes text color in CSS?", options: ["font-color", "text-color", "color"], answer: 2 },
+      { q: "Which HTML tag links a JavaScript file?", options: ["<script>", "<js>", "<link>"], answer: 0 },
+      { q: "How to style screens <600px?", options: ["@media screen and (max-width: 600px)", "@responsive", "@screen-size"], answer: 0 },
+      { q: "Which keyword declares a variable?", options: ["var", "int", "define"], answer: 0 },
+      { q: "Which CSS property controls layout direction?", options: ["flex-direction", "layout-flow", "direction-mode"], answer: 0 },
+      { q: "Which method adds to an array?", options: ["push()", "add()", "insert()"], answer: 0 },
+      { q: "Which event runs on button click?", options: ["onhover", "onclick", "onpress"], answer: 1 },
+      { q: "Which unit is relative to root font size?", options: ["em", "px", "rem"], answer: 2 }
+    ];
+
+    let score = 0;
+    let timeLeft = 60;
+    let timerInterval;
+
+    function startQuiz() {
+      const name = document.getElementById('username').value.trim();
+      if (!name) {
+        alert("Please enter your name!");
+        return;
+      }
+      document.getElementById('nameSection').style.display = 'none';
+      document.getElementById('quizSection').style.display = 'block';
+      document.getElementById('timer').style.display = 'block';
+      loadQuestions();
+      startTimer();
+    }
+
+    function loadQuestions() {
+      const quizContainer = document.getElementById('quiz');
+      questions.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'question';
+        const questionText = document.createElement('p');
+        questionText.textContent = `${index + 1}. ${item.q}`;
+        div.appendChild(questionText);
+
+        item.options.forEach((opt, i) => {
+          const btn = document.createElement('button');
+          btn.textContent = opt;
+          btn.onclick = () => {
+            const buttons = div.querySelectorAll('button');
+            buttons.forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            btn.dataset.correct = i === item.answer ? 'true' : 'false';
+          };
+          div.appendChild(btn);
+        });
+
+        quizContainer.appendChild(div);
+      });
+    }
+
+    function startTimer() {
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        document.getElementById('time').textContent = timeLeft;
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          submitQuiz();
+        }
+      }, 1000);
+    }
+
+    function submitQuiz() {
+      clearInterval(timerInterval);
+      const selectedButtons = document.querySelectorAll('.question .selected');
+      score = 0;
+      selectedButtons.forEach(btn => {
+        if (btn.dataset.correct === 'true') score++;
+      });
+
+      document.getElementById('quizSection').style.display = 'none';
+      document.getElementById('timer').style.display = 'none';
+      document.getElementById('result').style.display = 'block';
+      const name = document.getElementById('username').value.trim();
+      document.getElementById('result').innerHTML = `
+        <h2>🎉 Well done, ${name}!</h2>
+        <p>You got <strong>${score}</strong> out of <strong>${questions.length}</strong> correct.</p>
+        <p><em>Here's a joke to celebrate:</em></p>
+        <p id="joke">Loading joke...</p>
+      `;
+      loadJoke();
+    }
+
+    async function loadJoke() {
+      const jokeEl = document.getElementById('joke');
+      try {
+        const res = await fetch('https://icanhazdadjoke.com/', {
+          headers: { 'Accept': 'application/json' }
+        });
+        const data = await res.json();
+        jokeEl.textContent = data.joke;
+      } catch (err) {
+        jokeEl.textContent = 'Oops! Could not fetch joke.';
+      }
+    }
+  </script>
+</body>
+</html>
