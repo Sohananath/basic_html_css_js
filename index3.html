@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weblog</title>
+  <style>
+    /* === Reset & Base === */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #06043d;
+      background: linear-gradient(90deg, rgba(6, 4, 61, 1) 0%, rgba(27, 89, 171, 1) 35%, rgba(141, 173, 181, 1) 100%);
+      
+      color: #0f0635;
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    .home {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    h1, p {
+      text-align: center;
+    }
+    img {
+      width: 800px;
+      height: 400px;
+      display: block;
+      margin: 20px auto;
+    }
+
+    header, footer {
+      background: #024275;
+      color: #ffffff;
+      text-align: center;
+      padding: 1em;
+    }
+    nav {
+      background: #3578dc;
+      display: flex;
+      justify-content: center;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 1em;
+      display: block;
+    }
+    nav a:hover {
+      background: #020258;
+    }
+
+    main {
+      padding: 2em;
+      max-width: 1200px;
+      margin: auto;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 1em;
+    }
+
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 0.5fr));
+      gap: 2em;
+    }
+    .card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .card img {
+      width: 100%;
+      height: 300px;
+      display: block;
+    }
+    .card-body {
+      padding: 2em;
+    }
+    .card-body h3 {
+      margin-bottom: 0.5em;
+    }
+
+    form {
+      max-width: 500px;
+      margin: 2em auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+    }
+    input, textarea {
+      padding: 0.75em;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      padding: 0.75em;
+      background: #015794;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #06168f;
+    }
+
+    #themeToggle {
+      margin-top: 1em;
+      padding: 0.5em 1em;
+      background: #555;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .dark {
+      background: #1a1a1a;
+      color: #ccc;
+    }
+    .dark header, .dark footer {
+      background: #0f0f0f;
+    }
+    .dark nav {
+      background: #333;
+    }
+    .dark nav a {
+      color: #ddd;
+    }
+
+    @media (max-width: 600px) {
+      nav {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Weblog</h1>
+    <button id="themeToggle">Toggle Theme</button>
+  </header>
+
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#cards">Articles</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <main>
+    <section id="home">
+      <h1>Web Development</h1>
+      <img src="https://www.webworxtechnology.com/wp-content/uploads/2018/06/web-development.jpg" alt="Web-dev" />
+      <p><b><i>Web development is the process of building and maintaining websites and web applications. It combines creativity, logic, and technology to create everything from simple static pages to complex platforms like social networks, e-commerce sites, and online tools.</i></b></p>
+    </section>
+
+    <br>
+    <hr>
+    <br>
+
+    <section id="cards">
+      <h2>Featured Articles</h2>
+      <div class="card-container">
+        <div class="card">
+          <img loading="lazy" src="https://thedailyfrontend.com/wp-content/uploads/2024/11/Understanding-HTML-Image-Maps-with-Examples-700x420.jpg" alt="HTML5" />
+          <div class="card-body">
+            <h3>HTML</h3>
+            <p>HTML (HyperText Markup Language) is the standard language used to create and structure content on the web. It tells web browsers how to display text, images, links, and other elements on a webpage.</p>
+          </div>
+        </div>
+        <div class="card">
+          <img loading="lazy" src="https://tse2.mm.bing.net/th/id/OIP.rM8t0CGxBDN6eaJGgJyJwAHaEc?rs=1&pid=ImgDetMain&o=7&rm=3" alt="CSS" />
+          <div class="card-body">
+            <h3>CSS</h3>
+            <p>CSS (Cascading Style Sheets) is the language used to style and visually present HTML content. While HTML structures a webpage, CSS makes it beautiful—controlling layout, colors, fonts, spacing, and more.</p>
+          </div>
+        </div>
+        <div class="card">
+          <img loading="lazy" src="https://www.computerhope.com/jargon/j/javascript.png" alt="javascript" />
+          <div class="card-body">
+            <h3>JAVASCRIPT</h3>
+            <p>JavaScript is a powerful, high-level programming language that brings interactivity and dynamic behavior to websites. It runs directly in the browser, allowing developers to create responsive user experiences—from animations to form validation to real-time updates.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <br>
+    <br>
+    <hr>
+    <br>
+
+    <section id="contact">
+      <h2>Contact Me</h2>
+      <form id="contactForm">
+        <input type="text" name="name" placeholder="Your Name" required />
+        <input type="email" name="email" placeholder="Your Email" required />
+        <textarea name="message" placeholder="Your Message" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 ProBlog. All rights reserved.</p>
+  </footer>
+
+  <script>
+    document.getElementById("themeToggle").addEventListener("click", function () {
+      document.body.classList.toggle("dark");
+    });
+
+    document.getElementById("contactForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      alert("Thank you! Your message has been sent.");
+      this.reset();
+    });
+  </script>
+</body>
+</html>
